@@ -22,7 +22,11 @@
         <a href="mailto:youremail@example.com" style="color:#ffcc66;">youremail@example.com</a>
     </p>
     <button class="like-btn" onclick="likeSite()">Like (<span id="likeCount">0</span>)</button>
-    <div class="reviews" id="reviews"></div>
+    <div class="comment-form">
+        <input type="text" id="username" placeholder="Your Name">
+        <textarea id="comment" placeholder="Leave a comment"></textarea>
+        <button onclick="submitComment()">Submit Comment</button>
+    </div>
 </div>
 
 <div id="result"></div>
@@ -30,6 +34,11 @@
 <div class="section">
     <h2>Disclaimer</h2>
     <p><strong>This tool is for educational purposes only.</strong> Unauthorized use of student data may lead to disciplinary or legal action. Use responsibly.</p>
+</div>
+
+<div id="reviewsSection" class="section">
+    <h2>User Comments</h2>
+    <div id="reviews"></div>
 </div>
 
 <footer>
