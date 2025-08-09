@@ -62,7 +62,7 @@ async function fetchPhotos() {
 
 function addImage(roll) {
     const img = document.createElement("img");
-    img.src = `https://erp.giet.edu/images/students/${roll}.jpg`;
+    img.src = `https://erp.giet.edu/images/${roll}/${roll}.jpg`;
     img.onerror = () => img.style.display = "none";
     img.className = "student-photo";
     document.getElementById("result").appendChild(img);
