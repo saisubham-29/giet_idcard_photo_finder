@@ -1,111 +1,99 @@
-// Fetch likes + comments from backend
-async function fetchLikes() {
-    try {
-        const res = await fetch("/api/getLikes");
-        const data = await res.json();
-        document.getElementById("likeCount").textContent = data.likes || 0;
-        renderComments(data.comments || []);
-    } catch (err) {
-        console.error("Error fetching likes:", err);
+    function expandRange(range) {
+    const [start, end] = range.split('-').map(r => r.trim().toUpperCase());
+    const prefix = start.slice(0, start.length - 3);
+    const startNum = parseInt(start.slice(-3), 10);
+    const endNum = parseInt(end.slice(-3), 10);
+    let rolls = [];
+    for (let i = startNum; i <= endNum; i++) {
+        rolls.push(`${prefix}${i.toString().padStart(3, '0')}`);
     }
+    return rolls;
 }
 
-// Render comments in reviews section
-function renderComments(comments) {
-    const reviewsDiv = document.getElementById("reviews");
-    reviewsDiv.innerHTML = comments
-        .map(c => `<p><strong>${c.username}:</strong> ${c.text}</p>`)
-        .join("");
-}
-
-// Like button handler
-async function likeSite() {
-    try {
-        const res = await fetch("/api/updateLikes", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ like: true })
-        });
-        const data = await res.json();
-        document.getElementById("likeCount").textContent = data.likes;
-    } catch (err) {
-        console.error("Error updating like:", err);
-    }
-}
-
-// Comment submission
-async function submitComment() {
-    const username = document.getElementById("username").value.trim();
-    const comment = document.getElementById("comment").value.trim();
-
-    if (!username || !comment) return alert("Please enter name and comment");
-
-    try {
-        const res = await fetch("/api/updateLikes", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ comment, username })
-        });
-        const data = await res.json();
-        renderComments(data.comments);
-        document.getElementById("comment").value = "";
-    } catch (err) {
-        console.error("Error submitting comment:", err);
-    }
-}
-
-// Fetch photos for given roll numbers
-async function fetchPhotos() {
-    const rollNumbers = document.getElementById("rollNumbers").value.trim();
-    if (!rollNumbers) return alert("Please enter roll numbers");
-
+function fetchPhotos() {
+    const input = document.getElementById("rollNumbers").value.trim();
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = "";
-
-    const rolls = rollNumbers.split(",").map(r => r.trim());
+    if (!input) {
+        resultDiv.innerHTML = "<div class='error'>⚠ Please enter at least one roll number</div>";
+        return;
+    }
+    let rolls = [];
+    const entries = input.split(/[\n,]+/).map(r => r.trim()).filter(r => r);
+    entries.forEach(entry => {
+        entry = entry.toUpperCase();
+        if (entry.includes('-')) {
+            rolls.push(...expandRange(entry));
+        } else {
+            rolls.push(entry);
+        }
+    });
 
     rolls.forEach(roll => {
-        if (roll.includes("-")) {
-            let [start, end] = roll.split("-");
-            let prefix = start.match(/^[^\d]+/)[0];
-            let startNum = parseInt(start.match(/\d+$/)[0]);
-            let endNum = parseInt(end.match(/\d+$/)[0]);
-            for (let i = startNum; i <= endNum; i++) {
-                addImage(prefix + i.toString().padStart(3, "0"));
-            }
-        } else {
-            addImage(roll);
-        }
+        const card = document.createElement("div");
+        card.classList.add("card");
+        const imgUrl = `https://gietuerp.in/StudentDocuments/${roll}/${roll}.JPG`;
+        const img = document.createElement("img");
+        img.src = imgUrl;
+        img.alt = roll;
+        const title = document.createElement("p");
+        title.innerHTML = `<strong>${roll}</strong>`;
+        img.onerror = function() {
+            card.innerHTML = `<p><strong>${roll}</strong></p><div class='error'>❌ Image not found</div>`;
+        };
+        card.onclick = function() {
+            const a = document.createElement("a");
+            a.href = imgUrl;
+            a.download = `${roll}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+        card.appendChild(title);
+        card.appendChild(img);
+        resultDiv.appendChild(card);
     });
 }
 
-// Add image with extension fallback
-function addImage(roll) {
-    const extensions = ["jpg", "JPG", "jpeg"];
-    let index = 0;
+async function loadLikes() {
+    const res = await fetch('/api/getLikes');
+    const data = await res.json();
+    document.getElementById("likeCount").innerText = data.likes || 0;
 
-    function tryNextExtension() {
-        if (index >= extensions.length) {
-            console.warn(`Image not found for ${roll}`);
-            return;
-        }
-
-        const img = document.createElement("img");
-        img.src = `https://erp.giet.edu/images/students/${roll}.${extensions[index]}`;
-        img.className = "student-photo";
-
-        img.onerror = () => {
-            img.remove();
-            index++;
-            tryNextExtension();
-        };
-
-        img.onload = () => console.log(`Loaded: ${img.src}`);
-        document.getElementById("result").appendChild(img);
+    const reviewsDiv = document.getElementById("reviews");
+    reviewsDiv.innerHTML = "";
+    if (data.reviews) {
+        data.reviews.forEach(r => {
+            const rev = document.createElement("div");
+            rev.classList.add("review");
+            rev.innerText = r;
+            reviewsDiv.appendChild(rev);
+        });
     }
-
-    tryNextExtension();
 }
 
-// Load likes + comments on page load
-document.addEventListener("DOMContentLoaded", fetchLikes);
+async function likeSite() {
+    const userName = prompt("Enter your name:");
+    if (!userName) return;
+
+    const userComment = prompt("Leave a quick comment (optional):");
+    const likeCountElem = document.getElementById("likeCount");
+    
+    let current = parseInt(likeCountElem.innerText) || 0;
+    current++;
+
+    likeCountElem.innerText = current;
+
+    await fetch('/api/updateLikes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            likes: current, 
+            review: userComment ? `${userName}: ${userComment}` : `${userName} liked this`
+        })
+    });
+
+    loadLikes();
+}
+
+loadLikes();
