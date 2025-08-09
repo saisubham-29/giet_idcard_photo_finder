@@ -19,7 +19,7 @@ html,body { height: 100%; }
 body {
   margin: 0;
   font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, var(--bg-a), var(--bg-b));
+  background: linear-gradient(135deg, var(--bg-b));
   color: #fff;
   display: flex;
   flex-direction: column;
