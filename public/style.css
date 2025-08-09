@@ -1,238 +1,77 @@
-root{
-  --bg-a: #00aaff;
-  --bg-b: #0055ff;
-  --accent: #ffb347;
-  --accent-2: #ffcc33;
-  --muted: rgba(255,255,255,0.12);
-  --card-bg: rgba(255,255,255,0.10);
-  --glass: rgba(255,255,255,0.06);
-  --danger: rgba(255,0,0,0.38);
-  --text-dark: #222;
-  --like: #ff4f81;
-}
-
-* { box-sizing: border-box; }
-html,body { height: 100%; }
-
 body {
-  margin: 0;
-  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, var(--bg-a), var(--bg-b));
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: 36px 18px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
-/* Header */
 h1 {
-  font-size: 2.4rem;
-  margin: 0 0 8px 0;
-  text-shadow: 0 6px 20px rgba(0,0,0,0.25);
-  text-align: center;
-  letter-spacing: -0.4px;
+    margin-top: 20px;
+    font-size: 2rem;
 }
 
-/* Search area */
 .search-box {
-  width: 100%;
-  max-width: 560px;
-  display: flex;
-  gap: 10px;
-  background: var(--glass);
-  padding: 12px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  align-items: center;
-  margin-top: 12px;
-  backdrop-filter: blur(6px);
+    margin: 20px auto;
+    max-width: 500px;
 }
 
-.search-box textarea {
-  flex: 1;
-  min-height: 44px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: none;
-  resize: vertical;
-  background: rgba(255,255,255,0.02);
-  color: #fff;
-  font-size: 0.98rem;
-  outline: none;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    resize: none;
+    font-size: 1rem;
 }
 
-.search-box textarea::placeholder {
-  color: rgba(255,255,255,0.65);
-  opacity: 0.9;
-  font-style: italic;
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background: #ffcc66;
+    color: black;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
-.search-box button {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  border: none;
-  color: var(--text-dark);
-  font-weight: 700;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-  font-size: 0.98rem;
+button:hover {
+    background: #ffaa00;
 }
 
-.search-box button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.22);
-}
-
-/* Like card (directly under search) */
 .like-card {
-  width: 100%;
-  max-width: 560px;
-  margin-top: 18px;
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 18px;
-  text-align: center;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.22);
-  backdrop-filter: blur(6px);
+    margin: 20px auto;
+    max-width: 500px;
+    padding: 15px;
+    background: #1e1e1e;
+    border-radius: 12px;
 }
 
-.like-card h2 {
-  margin: 0 0 6px 0;
-  font-size: 1.15rem;
-  color: #fff;
+.comment-form {
+    margin-top: 15px;
 }
 
-.like-card p { margin: 0; opacity: 0.95; font-size: 0.95rem; }
-
-.like-card .like-btn {
-  margin-top: 12px;
-  background: linear-gradient(135deg, var(--like), #ff416c);
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  transition: transform .16s ease;
+.comment-form input,
+.comment-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 6px;
+    border: none;
 }
 
-.like-card .like-btn:hover { transform: scale(1.04); }
-
-/* Reviews in like card */
-.reviews {
-  margin-top: 14px;
-  text-align: left;
-  max-height: 140px;
-  overflow-y: auto;
-  padding-right: 6px;
+#reviewsSection {
+    margin: 30px auto;
+    max-width: 600px;
+    text-align: left;
 }
 
-.review {
-  background: rgba(255,255,255,0.04);
-  border-radius: 8px;
-  padding: 8px 10px;
-  margin-bottom: 8px;
-  font-size: 0.92rem;
-  line-height: 1.2;
-}
-
-/* Results grid */
-#result {
-  width: 100%;
-  max-width: 1100px;
-  margin-top: 18px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  justify-content: center;
-}
-
-/* Card for each image */
-.card {
-  width: 220px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 12px;
-  text-align: center;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.22);
-  cursor: pointer;
-  transition: transform .14s ease, box-shadow .14s ease;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.28);
-}
-
-.card p { margin: 8px 0 6px 0; font-weight: 700; }
-
-/* Image */
-.card img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 10px;
-  border: 3px solid rgba(255,255,255,0.14);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.25);
-  transition: transform .18s ease;
-}
-
-.card img:active { transform: scale(0.99); }
-
-/* Error box for missing image */
-.error {
-  color: #fff;
-  background: var(--danger);
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-align: center;
-}
-
-/* Info section */
-.section {
-  width: 100%;
-  max-width: 880px;
-  margin-top: 26px;
-  background: rgba(0,0,0,0.18);
-  padding: 14px 18px;
-  border-radius: 10px;
-  line-height: 1.45;
-}
-
-/* Footer */
-footer {
-  margin-top: 28px;
-  width: 100%;
-  max-width: 900px;
-  padding: 14px;
-  text-align: center;
-  background: rgba(0,0,0,0.14);
-  border-radius: 10px;
-  font-size: 0.92rem;
-  color: rgba(255,255,255,0.95);
-}
-
-/* Responsive tweaks */
-@media (max-width: 720px) {
-  body { padding: 20px 12px; }
-  h1 { font-size: 1.9rem; }
-  .search-box { max-width: 100%; padding: 10px; gap: 8px; }
-  .like-card, .search-box { border-radius: 10px; }
-  .card { width: calc(50% - 18px); }
-  .reviews { max-height: 110px; }
-}
-
-@media (max-width: 420px) {
-  .card { width: 100%; }
-  .search-box { flex-direction: column; gap: 8px; }
-  .search-box button { width: 100%; }
+#reviews p {
+    background: #1f1f1f;
+    padding: 8px;
+    border-radius: 6px;
+    margin: 5px 0;
 }
