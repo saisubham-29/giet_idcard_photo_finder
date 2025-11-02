@@ -1,55 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>GIET ERP Profile Pic</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>GIET ERP Photo Finder</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <h1>GIET ERP Photo Finder</h1>
 
-<h1>Your GIET Id Card Pic</h1>
+  <!-- 🔐 ERP Login Iframe -->
+  <div class="iframe-container">
+    <p><strong>Step 1:</strong> Log in below to GIET ERP to gain access.</p>
+    <iframe
+      id="erpFrame"
+      src="https://gietuerp.in/Student/"
+      width="100%"
+      height="400"
+      title="GIET ERP Login"
+      allow="clipboard-read; clipboard-write"
+      sandbox="allow-same-origin allow-scripts allow-forms"
+    ></iframe>
+    <button id="loginDoneBtn">✅ I have logged in</button>
+  </div>
 
-<div class="search-box">
-    <textarea id="rollNumbers" placeholder="Enter roll numbers (e.g. 23CSE001, 23CSE002-23CSE005)"></textarea>
-    <button onclick="fetchPhotos()">Fetch</button>
-</div>
+  <!-- 🔍 Search Area (hidden until login done) -->
+  <div id="searchSection" style="display:none;">
+    <div class="search-box">
+      <textarea
+        id="rollNumbers"
+        placeholder="Enter roll numbers (e.g. 23CSE001, 23CSE002-23CSE005)"
+      ></textarea>
+      <button onclick="fetchPhotos()">Fetch Photos</button>
+    </div>
 
-<div class="like-card">
-    <h2>❤️ Leave a Like for the Developer</h2>
-    <p>This helps make the app more credible and keeps it running.</p>
-    <p style="font-size:0.85rem; opacity:0.9;">
-        For detailed reviews, bug reports, or improvement ideas, please email: 
-        <a href="mailto:youremail@example.com" style="color:#ffcc66;">getyourownimage@gmail.com</a>
-    </p>
-    <button class="like-btn" onclick="likeSite()">Like (<span id="likeCount">0</span>)</button>
-    <div class="reviews" id="reviews"></div>
-</div>
+    <div class="like-card">
+      <h2>❤️ Leave a Like for the Developer</h2>
+      <p>Helps me improve and keep the app running!</p>
+      <button class="like-btn" onclick="likeSite()">
+        Like (<span id="likeCount">0</span>)
+      </button>
+      <div class="reviews" id="reviews"></div>
+    </div>
 
-<div id="result"></div>
-<div class="section" id="features">
-  <h2>Powerful Features of GIET ERP Student Photo Finder</h2>
-  <ul>
-    <li><strong>Fast & Accurate Roll Number Search:</strong> Retrieve student ID card photos instantly by entering single or multiple roll numbers, including ranges like <em>23CSE001-23CSE005</em>.</li>
-    <li><strong>Bulk Roll Number Support:</strong> Fetch photos for multiple students at once with easy input of comma or newline separated roll numbers and ranges.</li>
-    <li><strong>High-Quality Student ID Images:</strong> Access crisp, official GIET ERP ID card photos directly from the trusted university source.</li>
-    <li><strong>Downloadable Photos:</strong> Click on any student card to quickly download the ID image for offline use or record keeping.</li>
-    <li><strong>Like & Review System:</strong> Show appreciation for the developer and share your feedback, helping us improve and keep this tool reliable.</li>
-    <li><strong>Secure & Educational Use Only:</strong> Designed for responsible and authorized educational purposes with a clear disclaimer to protect student privacy.</li>
-    <li><strong>Responsive Design:</strong> Works flawlessly on desktops, tablets, and mobile devices for GIET students and faculty on the go.</li>
-  </ul>
-  <p>Use this GIET ERP student photo finder to save time and effort in locating official ID card images quickly and securely. Whether you are a student, faculty member, or admin, our tool simplifies the search process with advanced range expansion and bulk support.</p>
-</div>
+    <div id="result"></div>
+  </div>
 
-
-<div class="section">
+  <div class="section">
     <h2>Disclaimer</h2>
-    <p><strong>This tool is for educational purposes only.</strong> Unauthorized use of student data may lead to disciplinary or legal action. Use responsibly.</p>
-</div>
+    <p>
+      <strong>This tool is for educational purposes only.</strong> Unauthorized
+      use of student data or ERP content is prohibited. Use responsibly.
+    </p>
+  </div>
 
-<footer>
-    &copy; 2025 GIET Photo Finder | Contact: <a href="mailto:getyourownimage@gmail.com" style="color:#ffcc66">Email Us</a>
-</footer>
+  <footer>
+    &copy; 2025 GIET ERP Photo Finder | Contact:
+    <a href="mailto:getyourownimage@gmail.com" style="color:#ffcc66"
+      >getyourownimage@gmail.com</a
+    >
+  </footer>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
