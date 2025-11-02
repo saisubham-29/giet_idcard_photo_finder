@@ -14,6 +14,7 @@ function fetchPhotos() {
     const input = document.getElementById("rollNumbers").value.trim();
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = "";
+    
     if (!input) {
         resultDiv.innerHTML = "<div class='error'>⚠ Please enter at least one roll number</div>";
         return;
@@ -21,6 +22,7 @@ function fetchPhotos() {
 
     let rolls = [];
     const entries = input.split(/[\n,]+/).map(r => r.trim()).filter(r => r);
+    
     entries.forEach(entry => {
         entry = entry.toUpperCase();
         if (entry.includes('-')) {
@@ -34,7 +36,7 @@ function fetchPhotos() {
         const card = document.createElement("div");
         card.classList.add("card");
 
-        // ✅ Updated ERP photo link
+        // ✅ Updated to new official ERP endpoint
         const imgUrl = `https://gietuerp.in/Student/GetStudentImage?rollno=${roll}`;
 
         const img = document.createElement("img");
@@ -48,7 +50,7 @@ function fetchPhotos() {
             card.innerHTML = `<p><strong>${roll}</strong></p><div class='error'>❌ Image not found</div>`;
         };
 
-        // click to download
+        // 💾 Click to download image
         card.onclick = function () {
             const a = document.createElement("a");
             a.href = imgUrl;
@@ -64,7 +66,7 @@ function fetchPhotos() {
     });
 }
 
-// ---------- Like & Review Logic ----------
+// ---------- ❤️ Like & Review Logic ----------
 
 async function loadLikes() {
     try {
