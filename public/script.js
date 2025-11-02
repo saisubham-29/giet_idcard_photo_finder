@@ -18,6 +18,7 @@ function fetchPhotos() {
         resultDiv.innerHTML = "<div class='error'>⚠ Please enter at least one roll number</div>";
         return;
     }
+
     let rolls = [];
     const entries = input.split(/[\n,]+/).map(r => r.trim()).filter(r => r);
     entries.forEach(entry => {
@@ -32,16 +33,23 @@ function fetchPhotos() {
     rolls.forEach(roll => {
         const card = document.createElement("div");
         card.classList.add("card");
-        const imgUrl = `https://gietuerp.in/StudentDocuments/${roll}/${roll}.JPG`;
+
+        // ✅ Updated ERP photo link
+        const imgUrl = `https://gietuerp.in/Student/GetStudentImage?rollno=${roll}`;
+
         const img = document.createElement("img");
         img.src = imgUrl;
         img.alt = roll;
+
         const title = document.createElement("p");
         title.innerHTML = `<strong>${roll}</strong>`;
-        img.onerror = function() {
+
+        img.onerror = function () {
             card.innerHTML = `<p><strong>${roll}</strong></p><div class='error'>❌ Image not found</div>`;
         };
-        card.onclick = function() {
+
+        // click to download
+        card.onclick = function () {
             const a = document.createElement("a");
             a.href = imgUrl;
             a.download = `${roll}.jpg`;
@@ -49,26 +57,35 @@ function fetchPhotos() {
             a.click();
             document.body.removeChild(a);
         };
+
         card.appendChild(title);
         card.appendChild(img);
         resultDiv.appendChild(card);
     });
 }
 
-async function loadLikes() {
-    const res = await fetch('/api/getLikes');
-    const data = await res.json();
-    document.getElementById("likeCount").innerText = data.likes || 0;
+// ---------- Like & Review Logic ----------
 
-    const reviewsDiv = document.getElementById("reviews");
-    reviewsDiv.innerHTML = "";
-    if (data.reviews) {
-        data.reviews.forEach(r => {
-            const rev = document.createElement("div");
-            rev.classList.add("review");
-            rev.innerText = r;
-            reviewsDiv.appendChild(rev);
-        });
+async function loadLikes() {
+    try {
+        const res = await fetch('/api/getLikes');
+        const data = await res.json();
+
+        document.getElementById("likeCount").innerText = data.likes || 0;
+
+        const reviewsDiv = document.getElementById("reviews");
+        reviewsDiv.innerHTML = "";
+
+        if (data.reviews && Array.isArray(data.reviews)) {
+            data.reviews.forEach(r => {
+                const rev = document.createElement("div");
+                rev.classList.add("review");
+                rev.innerText = r;
+                reviewsDiv.appendChild(rev);
+            });
+        }
+    } catch (err) {
+        console.error("Error loading likes:", err);
     }
 }
 
@@ -78,18 +95,19 @@ async function likeSite() {
 
     const userComment = prompt("Leave a quick comment (optional):");
     const likeCountElem = document.getElementById("likeCount");
-    
+
     let current = parseInt(likeCountElem.innerText) || 0;
     current++;
-
     likeCountElem.innerText = current;
 
     await fetch('/api/updateLikes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            likes: current, 
-            review: userComment ? `${userName}: ${userComment}` : `${userName} liked this`
+        body: JSON.stringify({
+            likes: current,
+            review: userComment
+                ? `${userName}: ${userComment}`
+                : `${userName} liked this`
         })
     });
 
